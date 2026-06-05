@@ -806,4 +806,4 @@ if __name__ == "__main__":
     print("  BOT ADMIN PANEL CHAL RAHA HAI!")
     print("  Browser mein kholo: http://localhost:5000")
     print("=" * 50)
-    app.run(host="0.0.0.0", port=5000, debug=False)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)

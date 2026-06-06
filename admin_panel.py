@@ -11,17 +11,17 @@ from telegram.error import TelegramError
 
 # ===== CONFIG =====
 # ===== CONFIG =====
+# ===== CONFIG =====
 BOT_TOKEN = "8712586807:AAFsxiKFcgzRNjxRGGf8k0nQe5xHYmhu38I"
 CHAT_IDS = [-1003918677832]
 IMAGE_PATH = "bot_image.jpg"
 POINT_IMAGES_DIR = "point_images"
-PHOTO_DELAY_SECONDS = 50  # Default 50 seconds
-PHOTO_DELAY_MODE = "seconds"  # "seconds" or "minutes"
+PHOTO_DELAY_SECONDS = 50
+PHOTO_DELAY_MODE = "seconds"
 
-# 👇 YEH LINE NICHE ADD KARO (STICKER ID)
-            if STICKER_ID:
-                await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
-                print(f"[🎮] Sticker sent after image!")
+# 👇 YEH LINE ADD KARO (STICKER ID)
+STICKER_ID = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"
+
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 
 app = Flask(__name__)

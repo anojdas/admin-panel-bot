@@ -10,20 +10,21 @@ from telegram.ext import Application
 from telegram.error import TelegramError
 
 # ===== CONFIG =====
+# ===== CONFIG =====
 BOT_TOKEN = "8712586807:AAFsxiKFcgzRNjxRGGf8k0nQe5xHYmhu38I"
 CHAT_IDS = [-1003918677832]
 IMAGE_PATH = "bot_image.jpg"
 POINT_IMAGES_DIR = "point_images"
-PHOTO_DELAY_SECONDS = 50
-PHOTO_DELAY_MODE = "seconds"
+PHOTO_DELAY_SECONDS = 50  # Default 50 seconds
+PHOTO_DELAY_MODE = "seconds"  # "seconds" or "minutes"
 
-# STICKER IDs
-NAYA_STICKER_ID = "CAACAgUAAxkBAAMCaiQxlWsaixAV6hQvRulhBLCBJo8AAlwXAAJzJ4BUOHanPdxOCq87BA"
-PURANA_STICKER_ID = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"
+# 👇 YEH LINE NICHE ADD KARO (STICKER ID)
+STICKER_ID = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"
 
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 
 app = Flask(__name__)
+
 bot_application = None
 
 state = {
@@ -54,11 +55,14 @@ def get_message(multiplier_value):
     return state["message_template"].replace("{time}", time_str).replace("{multiplier}", str(multiplier_value))
 
 def get_delay_seconds():
+    """Returns delay in seconds based on mode"""
     delay_value = state.get("photo_delay", 50)
     mode = state.get("photo_delay_mode", "seconds")
+    
     if mode == "minutes":
-        return delay_value * 60
-    return delay_value
+        return delay_value * 60  # Convert minutes to seconds
+    else:
+        return delay_value  # Already in seconds
 
 async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_seconds):
     global bot_application
@@ -74,7 +78,10 @@ async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_second
         if bot_application and os.path.exists(image_path):
             with open(image_path, "rb") as img:
                 await bot_application.bot.send_photo(chat_id=chat_id, photo=img)
-            print(f"[📸] {multiplier_value}X photo sent!")
+            if mode == "minutes":
+                print(f"[📸] {multiplier_value}X photo sent after {delay_seconds//60} minutes!")
+            else:
+                print(f"[📸] {multiplier_value}X photo sent after {delay_seconds} seconds!")
         else:
             print(f"[❌] Failed to send photo")
     except Exception as e:
@@ -92,30 +99,7 @@ async def send_message(bot_app):
 
     for chat_id in CHAT_IDS:
         try:
-            # STEP 1: ARE YOU READY? MESSAGE
-            ready_message = """🔥 ARE YOU READY? 🔥
-
-NEXT ZWINMAX PREDICTION
-POWERED BY AVIATORGOD.
-
-REAL TIME WINDLE ANALYTICS
-TREND ANALYSIS
-
-AviatorGod
-NEXT TRADE
-LIVE
-TRADE"""
-            
-            await bot_app.bot.send_message(chat_id=chat_id, text=ready_message)
-            print(f"[🔥] ARE YOU READY? message sent!")
-            await asyncio.sleep(2)
-            
-            # STEP 2: NEXT TRADE LOCKED IN!
-            await bot_app.bot.send_message(chat_id=chat_id, text="🔒 NEXT TRADE LOCKED IN! 🔒")
-            print(f"[🔒] NEXT TRADE LOCKED IN! sent!")
-            await asyncio.sleep(1)
-            
-            # STEP 3: Prediction message
+            # STEP 1: Prediction message
             print(f"[📢] Sending prediction for {multiplier_value}X...")
             if state["image"] and os.path.exists(IMAGE_PATH):
                 with open(IMAGE_PATH, "rb") as img:
@@ -125,25 +109,21 @@ TRADE"""
             
             print(f"[✅] Prediction sent: {multiplier_value}X")
             
-            # STEP 4: NAYA STICKER (FIRST - JO SABSE PEHLE AAYEGA)
-            if NAYA_STICKER_ID:
-                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=NAYA_STICKER_ID)
-                print(f"[🎮] NAYA STICKER (FIRST) sent!")
+            # 👇👇👇 STICKER BHEJNE KI LINE (ADD THIS) 👇👇👇
+            # Sticker bhejo
+            if STICKER_ID:
+                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
+                print(f"[🎮] Sticker sent!")
                 await asyncio.sleep(0.5)
+            # 👆👆👆
             
-            # STEP 5: PURANA STICKER (OLD - JO BAAD MEIN AAYEGA)
-            if PURANA_STICKER_ID:
-                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=PURANA_STICKER_ID)
-                print(f"[🎮] PURANA STICKER sent!")
-                await asyncio.sleep(0.5)
-            
-            # STEP 6: Warning message
+            # Warning message
             await bot_app.bot.send_message(chat_id=chat_id, text="📌 💯\nENTER NOW का स्टीकर आने के बाद ही Game को Refresh करके फिर बेट लगानी है । 👏👏")
             
-            # STEP 7: GO GO message
+            # GO GO message
             await bot_app.bot.send_message(chat_id=chat_id, text="⚡ GO GO ⚡")
             
-            # STEP 8: Point photo with delay
+            # Point photo with delay
             if point_image_path and os.path.exists(point_image_path):
                 asyncio.create_task(send_delayed_photo(chat_id, point_image_path, multiplier_value, delay_seconds))
             
@@ -208,10 +188,13 @@ def update_photo_delay():
     data = request.json
     delay_value = int(data.get("delay", 50))
     mode = data.get("mode", "seconds")
+    
     if delay_value < 1:
         delay_value = 1
+    
     state["photo_delay"] = delay_value
     state["photo_delay_mode"] = mode
+    
     return jsonify({"status": "updated", "delay": delay_value, "mode": mode})
 
 @app.route("/api/upload_image", methods=["POST"])
@@ -830,5 +813,8 @@ setInterval(updateStatus, 3000);
 '''
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
+    print("=" * 50)
+    print("  BOT ADMIN PANEL CHAL RAHA HAI!")
+    print("  Browser mein kholo: http://localhost:5000")
+    print("=" * 50)
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)), debug=False)

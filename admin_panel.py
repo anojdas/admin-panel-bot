@@ -13,6 +13,7 @@ from telegram.error import TelegramError
 # ===== CONFIG =====
 # ===== CONFIG =====
 # ===== CONFIG =====
+# ===== CONFIG =====
 BOT_TOKEN = "8712586807:AAFsxiKFcgzRNjxRGGf8k0nQe5xHYmhu38I"
 CHAT_IDS = [-1003918677832]
 IMAGE_PATH = "bot_image.jpg"
@@ -21,8 +22,8 @@ PHOTO_DELAY_SECONDS = 50
 PHOTO_DELAY_MODE = "seconds"
 
 # DO STICKER IDs
-STICKER_1 = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"  # Pehla sticker (old)
-STICKER_2 = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"  # Doosra sticker (new)
+STICKER_1 = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"  # Pehla sticker (prediction ke baad)
+STICKER_2 = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"  # Doosra sticker (image ke baad)
 
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 
@@ -83,12 +84,11 @@ async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_second
                 await bot_application.bot.send_photo(chat_id=chat_id, photo=img)
             print(f"[📸] {multiplier_value}X photo sent!")
             
-            # 👇 YE LINES YAHAN LAGAO (FUNCTION KE ANDAR) 👇
+            # 👇 DOOSRA STICKER (STICKER_2)
             await asyncio.sleep(1)
-            if STICKER_ID:
-                await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
-                print(f"[🎮] Sticker sent after image!")
-            # 👆 YE LINES YAHAN LAGAO
+            if STICKER_2:
+                await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_2)
+                print(f"[🎮] Second sticker sent after image!")
             
         else:
             print(f"[❌] Failed to send photo")
@@ -116,13 +116,11 @@ async def send_message(bot_app):
             
             print(f"[✅] Prediction sent: {multiplier_value}X")
             
-            # 👇👇👇 STICKER BHEJNE KI LINE (ADD THIS) 👇👇👇
-            # Sticker bhejo
-            if STICKER_ID:
-                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
-                print(f"[🎮] Sticker sent!")
+            # 👇 PEHLA STICKER (STICKER_1)
+            if STICKER_1:
+                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=STICKER_1)
+                print(f"[🎮] First sticker sent!")
                 await asyncio.sleep(0.5)
-            # 👆👆👆
             
             # Warning message
             await bot_app.bot.send_message(chat_id=chat_id, text="📌 💯\nENTER NOW का स्टीकर आने के बाद ही Game को Refresh करके फिर बेट लगानी है । 👏👏")

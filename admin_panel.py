@@ -76,17 +76,22 @@ async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_second
         await asyncio.sleep(delay_seconds)
         
         if bot_application and os.path.exists(image_path):
+            # PEHLE IMAGE BHEJO
             with open(image_path, "rb") as img:
                 await bot_application.bot.send_photo(chat_id=chat_id, photo=img)
-            if mode == "minutes":
-                print(f"[📸] {multiplier_value}X photo sent after {delay_seconds//60} minutes!")
-            else:
-                print(f"[📸] {multiplier_value}X photo sent after {delay_seconds} seconds!")
+            print(f"[📸] {multiplier_value}X photo sent!")
+            
+            # 👇👇👇 IMAGE KE BAAD STICKER BHEJO 👇👇👇
+            await asyncio.sleep(1)  # 1 second gap
+            if STICKER_ID:CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA
+                await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
+                print(f"[🎮] Sticker sent after image!")
+            # 👆👆👆
+            
         else:
             print(f"[❌] Failed to send photo")
     except Exception as e:
         print(f"[❌] Error: {e}")
-
 async def send_message(bot_app):
     global bot_application
     bot_application = bot_app

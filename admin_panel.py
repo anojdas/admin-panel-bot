@@ -12,6 +12,7 @@ from telegram.error import TelegramError
 # ===== CONFIG =====
 # ===== CONFIG =====
 # ===== CONFIG =====
+# ===== CONFIG =====
 BOT_TOKEN = "8712586807:AAFsxiKFcgzRNjxRGGf8k0nQe5xHYmhu38I"
 CHAT_IDS = [-1003918677832]
 IMAGE_PATH = "bot_image.jpg"
@@ -19,8 +20,9 @@ POINT_IMAGES_DIR = "point_images"
 PHOTO_DELAY_SECONDS = 50
 PHOTO_DELAY_MODE = "seconds"
 
-# 👇 YEH LINE ADD KARO (STICKER ID)
-STICKER_ID = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"
+# DO STICKER IDs
+STICKER_1 = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"  # Pehla sticker (old)
+STICKER_2 = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"  # Doosra sticker (new)
 
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 

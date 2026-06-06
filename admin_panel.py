@@ -87,13 +87,49 @@ async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_second
     except Exception as e:
         print(f"[❌] Error: {e}")
 
+async def send_message(bot_app):
+    global bot_application
+    bot_application = bot_app
+    
+    point = get_random_point()
+    multiplier_value = point["value"]
+    point_image_path = point.get("image")
+    caption = get_message(multiplier_value)
+    delay_seconds = get_delay_seconds()
+
+    for chat_id in CHAT_IDS:
+        try:
             # STEP 1: Prediction message
             print(f"[📢] Sending prediction for {multiplier_value}X...")
-            ... prediction message code ...
+            if state["image"] and os.path.exists(IMAGE_PATH):
+                with open(IMAGE_PATH, "rb") as img:
+                    await bot_app.bot.send_photo(chat_id=chat_id, photo=img, caption=caption)
+            else:
+                await bot_app.bot.send_message(chat_id=chat_id, text=caption)
             
-            # 👈 STICKER YAHAN HAI (BAAD MEIN)
+            print(f"[✅] Prediction sent: {multiplier_value}X")
+            
+            # 👇👇👇 STICKER BHEJNE KI LINE (ADD THIS) 👇👇👇
+            # Sticker bhejo
             if STICKER_ID:
-                await bot_app.bot.send_sticker(...)
+                await bot_app.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
+                print(f"[🎮] Sticker sent!")
+                await asyncio.sleep(0.5)
+            # 👆👆👆
+            
+            # Warning message
+            await bot_app.bot.send_message(chat_id=chat_id, text="📌 💯\nENTER NOW का स्टीकर आने के बाद ही Game को Refresh करके फिर बेट लगानी है । 👏👏")
+            
+            # GO GO message
+            await bot_app.bot.send_message(chat_id=chat_id, text="⚡ GO GO ⚡")
+            
+            # Point photo with delay
+            if point_image_path and os.path.exists(point_image_path):
+                asyncio.create_task(send_delayed_photo(chat_id, point_image_path, multiplier_value, delay_seconds))
+            
+        except TelegramError as e:
+            print(f"[❌] Error: {e}")
+
 async def run_bot_loop():
     global bot_application
     bot_app = Application.builder().token(BOT_TOKEN).build()

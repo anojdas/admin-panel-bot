@@ -19,12 +19,11 @@ PHOTO_DELAY_SECONDS = 50  # Default 50 seconds
 PHOTO_DELAY_MODE = "seconds"  # "seconds" or "minutes"
 
 # 👇 YEH LINE NICHE ADD KARO (STICKER ID)
-STICKER_ID = "CAACAgUAAxkBAAMCaiQAAYlYy_2RAT-OkB5TB2T1rnkWAAJ8CgACYMUJVuetRliriXPDOwQ"
+STICKER_ID = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"
 
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 
 app = Flask(__name__)
-
 bot_application = None
 
 state = {

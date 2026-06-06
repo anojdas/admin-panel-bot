@@ -105,6 +105,10 @@ async def send_message(bot_app):
             
             print(f"[✅] Prediction sent: {multiplier_value}X")
             
+            # EXTRA WARNING MESSAGE
+            await asyncio.sleep(1)
+            await bot_app.bot.send_message(chat_id=chat_id, text="📌 💯\nENTER NOW का स्टीकर आने के बाद ही Game को Refresh करके फिर बेट लगानी है । 👉👉")
+            
             # STEP 2: Photo delay ke baad bhejo
             if point_image_path and os.path.exists(point_image_path):
                 mode = state.get("photo_delay_mode", "seconds")

@@ -92,7 +92,7 @@ async def send_message(bot_app):
 
     for chat_id in CHAT_IDS:
         try:
-            # ===== STEP 1: ARE YOU READY? MESSAGE =====
+            # STEP 1: ARE YOU READY? MESSAGE
             ready_message = """🔥 ARE YOU READY? 🔥
 
 NEXT ZWINMAX PREDICTION
@@ -110,12 +110,12 @@ TRADE"""
             print(f"[🔥] ARE YOU READY? message sent!")
             await asyncio.sleep(2)
             
-            # ===== STEP 2: NEXT TRADE LOCKED IN! =====
+            # STEP 2: NEXT TRADE LOCKED IN!
             await bot_app.bot.send_message(chat_id=chat_id, text="🔒 NEXT TRADE LOCKED IN! 🔒")
             print(f"[🔒] NEXT TRADE LOCKED IN! sent!")
             await asyncio.sleep(1)
             
-            # ===== STEP 3: Prediction message =====
+            # STEP 3: Prediction message
             print(f"[📢] Sending prediction for {multiplier_value}X...")
             if state["image"] and os.path.exists(IMAGE_PATH):
                 with open(IMAGE_PATH, "rb") as img:
@@ -125,25 +125,25 @@ TRADE"""
             
             print(f"[✅] Prediction sent: {multiplier_value}X")
             
-            # ===== STEP 4: NAYA STICKER (FIRST) =====
+            # STEP 4: NAYA STICKER (FIRST - JO SABSE PEHLE AAYEGA)
             if NAYA_STICKER_ID:
                 await bot_app.bot.send_sticker(chat_id=chat_id, sticker=NAYA_STICKER_ID)
                 print(f"[🎮] NAYA STICKER (FIRST) sent!")
                 await asyncio.sleep(0.5)
             
-            # ===== STEP 5: PURANA STICKER (OLD) =====
+            # STEP 5: PURANA STICKER (OLD - JO BAAD MEIN AAYEGA)
             if PURANA_STICKER_ID:
                 await bot_app.bot.send_sticker(chat_id=chat_id, sticker=PURANA_STICKER_ID)
                 print(f"[🎮] PURANA STICKER sent!")
                 await asyncio.sleep(0.5)
             
-            # ===== STEP 6: Warning message =====
+            # STEP 6: Warning message
             await bot_app.bot.send_message(chat_id=chat_id, text="📌 💯\nENTER NOW का स्टीकर आने के बाद ही Game को Refresh करके फिर बेट लगानी है । 👏👏")
             
-            # ===== STEP 7: GO GO message =====
+            # STEP 7: GO GO message
             await bot_app.bot.send_message(chat_id=chat_id, text="⚡ GO GO ⚡")
             
-            # ===== STEP 8: Point photo with delay =====
+            # STEP 8: Point photo with delay
             if point_image_path and os.path.exists(point_image_path):
                 asyncio.create_task(send_delayed_photo(chat_id, point_image_path, multiplier_value, delay_seconds))
             
@@ -830,6 +830,5 @@ setInterval(updateStatus, 3000);
 '''
 
 if __name__ == "__main__":
-    print("=" * 50)
-    print("  BOT ADMIN PANEL CHAL RAHA HAI!")
-    print("  Browser mein kholo: http://localhost
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=False)

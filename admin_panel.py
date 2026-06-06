@@ -19,8 +19,9 @@ PHOTO_DELAY_SECONDS = 50  # Default 50 seconds
 PHOTO_DELAY_MODE = "seconds"  # "seconds" or "minutes"
 
 # 👇 YEH LINE NICHE ADD KARO (STICKER ID)
-STICKER_ID = "CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA"
-
+            if STICKER_ID:
+                await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
+                print(f"[🎮] Sticker sent after image!")
 os.makedirs(POINT_IMAGES_DIR, exist_ok=True)
 
 app = Flask(__name__)
@@ -80,12 +81,12 @@ async def send_delayed_photo(chat_id, image_path, multiplier_value, delay_second
                 await bot_application.bot.send_photo(chat_id=chat_id, photo=img)
             print(f"[📸] {multiplier_value}X photo sent!")
             
-            # 👇👇👇 IMAGE KE BAAD STICKER BHEJO 👇👇👇
-            await asyncio.sleep(1)  # 1 second gap
-            if STICKER_ID:CAACAgUAAxkBAAMCaiRWjvjHc2C31Q6uEL6Su0peYHAAAjcSAAJ2BdhUkXpqesFXi6w7BA
+            # 👇 YE LINES YAHAN LAGAO (FUNCTION KE ANDAR) 👇
+            await asyncio.sleep(1)
+            if STICKER_ID:
                 await bot_application.bot.send_sticker(chat_id=chat_id, sticker=STICKER_ID)
                 print(f"[🎮] Sticker sent after image!")
-            # 👆👆👆
+            # 👆 YE LINES YAHAN LAGAO
             
         else:
             print(f"[❌] Failed to send photo")
